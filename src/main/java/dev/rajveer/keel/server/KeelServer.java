@@ -17,6 +17,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,20 +85,37 @@ public final class KeelServer implements Closeable {
             RespReader reader = new RespReader(in);
             RespWriter writer = new RespWriter(out);
             while (running) {
-                Resp value;
-                try {
-                    value = reader.read();
-                } catch (EOFException e) {
-                    return;
-                } catch (RespException e) {
-                    writer.write(Resp.error("ERR protocol error"));
+                in.mark(1);
+                int peek = in.read();
+                if (peek < 0) {
                     return;
                 }
-                if (value == null) {
-                    return;
-                }
+                in.reset();
                 try {
-                    writer.write(reply(value));
+                    Resp response;
+                    if (isRespPrefix(peek)) {
+                        Resp value;
+                        try {
+                            value = reader.read();
+                        } catch (EOFException e) {
+                            return;
+                        } catch (RespException e) {
+                            writer.write(Resp.error("ERR protocol error"));
+                            return;
+                        }
+                        if (value == null) {
+                            return;
+                        }
+                        response = reply(value);
+                    } else {
+                        // redis-benchmark's PING_INLINE test, and a telnet session,
+                        // send "PING\r\n" instead of a RESP array.
+                        response = inline(in);
+                        if (response == null) {
+                            return;
+                        }
+                    }
+                    writer.write(response);
                 } catch (CloseConnection e) {
                     writer.write(Resp.ok());
                     return;
@@ -108,6 +126,40 @@ public final class KeelServer implements Closeable {
         } catch (RuntimeException e) {
             System.err.println("client: " + e);
         }
+    }
+
+    private static boolean isRespPrefix(int b) {
+        return b == '+' || b == '-' || b == ':' || b == '$' || b == '*';
+    }
+
+    /** One space-separated line. Quotes are not handled; redis-cli does not need them. */
+    private Resp inline(BufferedInputStream in) throws IOException {
+        StringBuilder line = new StringBuilder();
+        while (true) {
+            int b = in.read();
+            if (b < 0) {
+                if (line.isEmpty()) {
+                    return null;
+                }
+                throw new EOFException("truncated line");
+            }
+            if (b == '\n') {
+                break;
+            }
+            if (b != '\r') {
+                line.append((char) b);
+            }
+        }
+        String text = line.toString().trim();
+        if (text.isEmpty()) {
+            return Resp.error("ERR protocol error");
+        }
+        String[] parts = text.split("\\s+");
+        List<byte[]> argv = new ArrayList<>(parts.length);
+        for (String part : parts) {
+            argv.add(part.getBytes(StandardCharsets.UTF_8));
+        }
+        return dispatcher.dispatch(argv);
     }
 
     private Resp reply(Resp value) {

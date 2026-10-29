@@ -53,6 +53,19 @@ class ServerTest {
     }
 
     @Test
+    void inlinePing() throws Exception {
+        try (RunningServer server = new RunningServer()) {
+            try (Socket socket = new Socket("127.0.0.1", server.port)) {
+                socket.setSoTimeout(2000);
+                socket.getOutputStream().write("PING\r\nECHO hi\r\n".getBytes(StandardCharsets.US_ASCII));
+                socket.getOutputStream().flush();
+                byte[] buf = socket.getInputStream().readNBytes(15);
+                assertEquals("+PONG\r\n$2\r\nhi\r\n", new String(buf, StandardCharsets.US_ASCII));
+            }
+        }
+    }
+
+    @Test
     void pipelineAndQuit() throws Exception {
         try (RunningServer server = new RunningServer()) {
             try (Client client = server.connect()) {
