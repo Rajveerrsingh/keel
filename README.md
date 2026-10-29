@@ -15,6 +15,8 @@ Rajveer Singh.
 You need JDK 21.
 
 ```bash
+git clone https://github.com/Rajveerrsingh/keel
+cd keel
 ./gradlew run
 ```
 
