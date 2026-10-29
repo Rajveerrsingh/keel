@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" role="img" aria-label="keel, amber terminal">
+  <rect width="960" height="300" fill="#100c08"/>
+  <rect x="36" y="28" width="888" height="244" rx="22" fill="#24180f" stroke="#5a3d16" stroke-width="2"/>
+  <circle cx="64" cy="52" r="4" fill="#6b4420"/>
+  <circle cx="80" cy="52" r="4" fill="#6b4420"/>
+  <circle cx="96" cy="52" r="4" fill="#ffb000"/>
+  <text x="860" y="56" fill="#8a5a16" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" text-anchor="end">VT220 AMBER</text>
+  <rect x="56" y="70" width="848" height="180" rx="8" fill="#140e09" stroke="#ffb000" stroke-width="1" opacity="0.95"/>
+  <g opacity="0.16">
+    <rect x="56" y="74" width="848" height="2" fill="#000"/>
+    <rect x="56" y="82" width="848" height="2" fill="#000"/>
+    <rect x="56" y="90" width="848" height="2" fill="#000"/>
+    <rect x="56" y="98" width="848" height="2" fill="#000"/>
+    <rect x="56" y="106" width="848" height="2" fill="#000"/>
+    <rect x="56" y="114" width="848" height="2" fill="#000"/>
+    <rect x="56" y="122" width="848" height="2" fill="#000"/>
+    <rect x="56" y="130" width="848" height="2" fill="#000"/>
+    <rect x="56" y="138" width="848" height="2" fill="#000"/>
+    <rect x="56" y="146" width="848" height="2" fill="#000"/>
+    <rect x="56" y="154" width="848" height="2" fill="#000"/>
+    <rect x="56" y="162" width="848" height="2" fill="#000"/>
+    <rect x="56" y="170" width="848" height="2" fill="#000"/>
+    <rect x="56" y="178" width="848" height="2" fill="#000"/>
+    <rect x="56" y="186" width="848" height="2" fill="#000"/>
+    <rect x="56" y="194" width="848" height="2" fill="#000"/>
+    <rect x="56" y="202" width="848" height="2" fill="#000"/>
+    <rect x="56" y="210" width="848" height="2" fill="#000"/>
+    <rect x="56" y="218" width="848" height="2" fill="#000"/>
+    <rect x="56" y="226" width="848" height="2" fill="#000"/>
+    <rect x="56" y="234" width="848" height="2" fill="#000"/>
+  </g>
+  <text x="80" y="112" fill="#ffb000" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="40" letter-spacing="3">keel</text>
+  <text x="80" y="142" fill="#c4841d" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">a small redis-compatible server in java 21</text>
+  <text x="80" y="184" fill="#8a5a16" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16">127.0.0.1:6379&gt; PING</text>
+  <text x="80" y="210" fill="#ffe0a3" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16">PONG</text>
+  <rect x="138" y="196" width="10" height="16" fill="#ffb000"/>
+</svg>
