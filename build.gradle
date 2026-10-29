@@ -1,0 +1,39 @@
+plugins {
+    id 'application'
+}
+
+group = 'dev.rajveer'
+version = '0.1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+}
+
+application {
+    mainClass = 'dev.rajveer.keel.Keel'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('jar') {
+    archiveFileName = 'keel.jar'
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+}
